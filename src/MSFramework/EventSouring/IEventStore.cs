@@ -5,16 +5,14 @@ namespace MSFramework.EventSouring
 {
 	public interface IEventStore
 	{
-		Task<EventHistory[]> GetEventsAsync(string aggregateId, long from);
+		Task<EventHistory[]> GetEventsAsync(Guid aggregateId, long from);
 
-		EventHistory[] GetEvents(string aggregateId, long from);
+		EventHistory[] GetEvents(Guid aggregateId, long from);
 
 		Task AddEventAsync(params EventHistory[] events);
-		
-		void AddEvents(params EventHistory[] events);
 
-		Task<EventHistory> GetLastEventAsync(string aggregateId);
+		Task<EventHistory> GetLastEventAsync(Guid aggregateId);
 		
-		EventHistory GetLastEvent(string aggregateId);
+		EventHistory GetLastEvent(Guid aggregateId);
 	}
 }

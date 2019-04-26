@@ -30,6 +30,10 @@ namespace Ordering.Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<int>("OrderStatus");
+
+                    b.Property<int>("OrderStatusId");
+
                     b.Property<string>("UserId")
                         .IsRequired();
 

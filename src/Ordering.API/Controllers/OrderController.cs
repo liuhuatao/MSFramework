@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MSFramework.AspNetCore;
 using MSFramework.Domain;
 using Ordering.API.Application.DTO;
 using Ordering.API.Application.Services;
@@ -11,28 +10,25 @@ using Ordering.API.Application.Services;
 namespace Ordering.API.Controllers
 {
 	[Route("api/v1/[controller]")]
+	//[Authorize]
 	[ApiController]
 	public class OrderController : MSFrameworkControllerBase
 	{
+		private readonly ILogger _logger;
 		private readonly IOrderingAppService _orderingAppService;
 
-		public OrderController(
+		public OrderController( 
 			IOrderingAppService orderingAppService,
-			IMSFrameworkSession session, ILogger<OrderController> logger) : base(session, logger)
+			IMSFrameworkSession session, ILogger<OrderController> logger) : base(session)
 		{
-			_orderingAppService = orderingAppService;			 
+			_logger = logger;
+		 
+			_orderingAppService = orderingAppService;
 		}
 
-		#region  Command
-
-		/// <summary>
-		/// FOR TEST Method
-		/// </summary>
-		/// <returns></returns>
-		[HttpPost]
+		[HttpPost("")]
 		public async Task<IActionResult> CreateOrderAsync()
 		{
-			
 			var random = new Random();
 			var items = new List<OrderItemDTO>();
 			var count = random.Next(2, 5);
@@ -52,7 +48,8 @@ namespace Ordering.API.Controllers
 			await _orderingAppService.CreateOrder(new CreateOrderDTO(items,
 				"HELLO",
 				"上海", "张扬路500号", "上海", "中国", "200000", "what?"));
-			return Ok(true);
+			// FOR TEST
+			return Ok();
 		}
 
 		[HttpDelete("{orderId}")]
@@ -62,36 +59,27 @@ namespace Ordering.API.Controllers
 			{
 				OrderId = orderId
 			});
-			return Ok(true);
+			return Ok();
 		}
 
 		[HttpPut("{orderId}/address")]
 		public async Task<IActionResult> ChangeOrderAddressAsync(Guid orderId,
-			[FromBody] ChangeOrderAddressDTO dto)
+			[FromBody] ChangeOrderAddressDTO command)
 		{
-			dto.OrderId = orderId;
-			await _orderingAppService.ChangeOrderAddress(dto);
-			return Ok(true);
+			command.OrderId = orderId;
+			await _orderingAppService.ChangeOrderAddress(command);
+			return Ok();
 		}
-
-		#endregion
 
 		#region QUERY
 
 		[HttpGet("{orderId}")]
-		public async Task<ActionResult> GetOrderAsync(Guid orderId)
+		public async Task<ActionResult> GetOrderAsync(string orderId)
 		{
-			var order = await _orderingAppService.GetOrderAsync(orderId);
+			var order = await _orderingAppService.GetOrderAsync(Guid.NewGuid());
 			return Ok(order);
 		}
 
-		[HttpGet()]
-		public async Task<ActionResult> GetOrdersAsync()
-		{
-			var order = await _orderingAppService.GetAllOrdersAsync();
-			return Ok(order);
-		}
-		
 		#endregion
 	}
 }

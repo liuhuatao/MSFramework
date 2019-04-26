@@ -3,24 +3,23 @@ using System.Threading.Tasks;
 
 namespace MSFramework.Domain.Repository
 {
-	public interface IWriteRepository<TAggregateRoot, in TAggregateRootId> : IRepository
-		where TAggregateRoot : AggregateRootBase<TAggregateRoot, TAggregateRootId>
-		where TAggregateRootId : IEquatable<TAggregateRootId>
+	public interface IWriteRepository<TAggregateRoot> : IRepository
+		where TAggregateRoot : AggregateRootBase
 	{
 		/// <summary>
 		/// Gets an entity with given primary key.
 		/// </summary>
 		/// <param name="id">Primary key of the entity to get</param>
 		/// <returns>Entity</returns>
-		TAggregateRoot Get(TAggregateRootId id);
+		TAggregateRoot Get(Guid id);
 
 		/// <summary>
 		/// Gets an entity with given primary key.
 		/// </summary>
 		/// <param name="id">Primary key of the entity to get</param>
 		/// <returns>Entity</returns>
-		Task<TAggregateRoot> GetAsync(TAggregateRootId id);
-
+		Task<TAggregateRoot> GetAsync(Guid id);
+		
 		/// <summary>
 		/// Inserts a new entity.
 		/// </summary>
@@ -61,12 +60,12 @@ namespace MSFramework.Domain.Repository
 		/// Deletes an entity by primary key.
 		/// </summary>
 		/// <param name="id">Primary key of the entity</param>
-		void Delete(TAggregateRootId id);
+		void Delete(Guid id);
 
 		/// <summary>
 		/// Deletes an entity by primary key.
 		/// </summary>
 		/// <param name="id">Primary key of the entity</param>
-		Task DeleteAsync(TAggregateRootId id);
+		Task DeleteAsync(Guid id);
 	}
 }

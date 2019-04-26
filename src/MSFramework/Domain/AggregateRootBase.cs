@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using MSFramework.Common;
-using MSFramework.Data;
 using MSFramework.Domain.Event;
 
 namespace MSFramework.Domain
@@ -12,25 +11,23 @@ namespace MSFramework.Domain
 	/// 外部领域事件: 通过分布式 EventBus 发布到消息队列中, 在 DbContext 中处理
 	/// </summary>
 	[Serializable]
-	public abstract class AggregateRootBase<TAggregateRoot, TAggregateRootId> :
-		EntityBase<TAggregateRootId>,
-		IAggregateRoot<TAggregateRootId>
-		where TAggregateRoot : AggregateRootBase<TAggregateRoot, TAggregateRootId>
-		where TAggregateRootId : IEquatable<TAggregateRootId>
+	public abstract class AggregateRootBase :
+		EntityBase<Guid>,
+		IAggregateRoot
 	{
 		public const long NewAggregateVersion = -1;
 
 		private readonly ICollection<IDomainEvent> _uncommittedEvents =
 			new LinkedList<IDomainEvent>();
 
-		private readonly ICollection<AggregateEventBase<TAggregateRoot, TAggregateRootId>> _aggregateEvents =
-			new LinkedList<AggregateEventBase<TAggregateRoot, TAggregateRootId>>();
+		private readonly ICollection<AggregateEventBase> _aggregateEvents =
+			new LinkedList<AggregateEventBase>();
 
-		protected AggregateRootBase() : base(Singleton<IIdGenerator>.Instance.GetNewId<TAggregateRootId>())
+		protected AggregateRootBase() : base(CombGuid.NewGuid())
 		{
 		}
 
-		protected AggregateRootBase(TAggregateRootId id) : base(id)
+		protected AggregateRootBase(Guid id) : base(id)
 		{
 		}
 
@@ -39,7 +36,7 @@ namespace MSFramework.Domain
 		public long Version { get; protected set; } = NewAggregateVersion;
 
 		public IEnumerable<IAggregateEvent> GetAggregateEvents() =>
-			_aggregateEvents.ToArray();
+			_aggregateEvents.AsEnumerable();
 
 
 		public void ClearAggregateEvents()
@@ -47,7 +44,7 @@ namespace MSFramework.Domain
 			_aggregateEvents.Clear();
 		}
 
-		protected void ApplyAggregateEvent(AggregateEventBase<TAggregateRoot, TAggregateRootId> aggregateEvent)
+		protected void ApplyAggregateEvent(AggregateEventBase aggregateEvent)
 		{
 			Version++;
 
@@ -78,13 +75,13 @@ namespace MSFramework.Domain
 		{
 			foreach (var @event in histories)
 			{
-				var aggregateEvent = (AggregateEventBase<TAggregateRoot, TAggregateRootId>) @event;
-				if (aggregateEvent.Version != Version + 1)
+				if (@event.Version != Version + 1)
 				{
-					throw new MSFrameworkException(aggregateEvent.Id.ToString());
+					throw new MSFrameworkException(@event.Id.ToString());
 				}
 
-				Id = (TAggregateRootId) Convert.ChangeType(aggregateEvent.AggregateId, typeof(TAggregateRootId));
+				var aggregateEvent = (AggregateEventBase) @event;
+				Id = aggregateEvent.AggregateId;
 				Version = aggregateEvent.Version;
 				PrivateReflectionDynamicObject.WrapObjectIfNeeded(this).Apply(aggregateEvent);
 			}

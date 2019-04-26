@@ -8,8 +8,6 @@ namespace MSFramework.Domain
 		string UserId { get; }
 
 		Task CommitAsync();
-
-		void Commit();
 	}
 
 	public class MSFrameworkSession : IMSFrameworkSession
@@ -28,11 +26,6 @@ namespace MSFramework.Domain
 		public async Task CommitAsync()
 		{
 			await _unitOfWork.CommitAsync();
-		}
-
-		public void Commit()
-		{
-			_unitOfWork.Commit();
 		}
 	}
 }

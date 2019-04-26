@@ -12,14 +12,14 @@ namespace MSFramework.EntityFrameworkCore
 	public static class ServiceCollectionExtensions
 	{
 		public static MSFrameworkBuilder UseEntityFramework(this MSFrameworkBuilder builder,
-			Action<EntityFrameworkBuilder> configure, IConfiguration configuration)
+			Action<EntityFrameworkBuilder> configure = null)
 		{
-			configuration.NotNull(nameof(configuration));
+			builder.Configuration.NotNull(nameof(builder.Configuration));
 
 			EntityFrameworkBuilder eBuilder = new EntityFrameworkBuilder(builder.Services);
 			configure?.Invoke(eBuilder);
 
-			var section = configuration.GetSection("DbContexts");
+			var section = builder.Configuration.GetSection("DbContexts");
 			EntityFrameworkOptions.EntityFrameworkOptionDict =
 				section.Get<Dictionary<string, EntityFrameworkOptions>>();
 			if (EntityFrameworkOptions.EntityFrameworkOptionDict == null ||

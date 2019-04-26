@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using MSFramework.Domain.Event;
 
 namespace Ordering.Domain.AggregateRoot
 {
-	public class OrderDeletedEvent : AggregateEventBase<Order, Guid>
+	public class OrderDeletedEvent : AggregateEventBase
 	{
 	}
-
-	public class OrderCreatedEvent : AggregateEventBase<Order, Guid>
+	
+	public class OrderCreatedEvent : AggregateEventBase
 	{
 		public string Description { get; }
 
@@ -23,7 +22,7 @@ namespace Ordering.Domain.AggregateRoot
 			Address address,
 			string description,
 			List<OrderItem> orderItems
-		)
+		) 
 		{
 			Description = description;
 			Address = address;
@@ -31,8 +30,8 @@ namespace Ordering.Domain.AggregateRoot
 			OrderItems = orderItems;
 		}
 	}
-
-	public class OrderAddressChangedEvent : AggregateEventBase<Order, Guid>
+	
+	public class OrderAddressChangedEvent : AggregateEventBase
 	{
 		public Address NewOrderAddress { get; }
 
