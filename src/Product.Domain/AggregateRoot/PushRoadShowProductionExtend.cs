@@ -9,7 +9,7 @@ namespace Product.Domain.AggregateRoot
 		/// <summary>
 		/// 路演核心观点
 		/// </summary>
-		public string Point;
+		public string Point{ get; private set; }
 
 		private PushRoadShowProductionExtend()
 		{

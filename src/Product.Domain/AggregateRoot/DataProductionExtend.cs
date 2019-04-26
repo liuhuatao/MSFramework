@@ -9,65 +9,65 @@ namespace Product.Domain.AggregateRoot
 		/// <summary>
 		/// 是否锁定
 		/// </summary>
-		public bool Locked;
-		
+		public bool Locked { get; private set; }
+
 		/// <summary>
 		/// 要求锁定的客户Id
 		/// </summary>
-		public Guid LockedClientId;
-		
+		public Guid LockedClientId { get; private set; }
+
 		/// <summary>
 		/// 周期：季度、月度、双周、周度
 		/// </summary>
-		public string Cycle;
-		
+		public string Cycle { get; private set; }
+
 		/// <summary>
 		/// 调研指标
 		/// </summary>
-		public string ResearchTarget;
+		public string ResearchTarget { get; private set; }
 
 		/// <summary>
 		/// 调研产品
 		/// </summary>
-		public string ResearchProduct;
+		public string ResearchProduct { get; private set; }
 
 		/// <summary>
 		/// 呈现形式 ppt、excel
 		/// </summary>
-		public string ExpressionType;
+		public string ExpressionType { get; private set; }
 
 		/// <summary>
 		/// 历史数据时间长度
 		/// </summary>
-		public string HistoryDataTimeLength;
+		public string HistoryDataTimeLength { get; private set; }
 
 		/// <summary>
 		/// 拟合系数
 		/// </summary>
-		public string FitCoefficient;
+		public string FitCoefficient { get; private set; }
 
 		/// <summary>
 		/// 样本占比
 		/// </summary>
-		public string SampleRatio;
+		public string SampleRatio { get; private set; }
 
 		/// <summary>
 		/// 渠道匹配度
 		/// </summary>
-		public string ChannelMatch;
+		public string ChannelMatch { get; private set; }
 
 		/// <summary>
 		/// 区域匹配度
 		/// </summary>
-		public string AreaMatch;
+		public string AreaMatch { get; private set; }
 
 		private DataProductionExtend()
 		{
 		}
 
-		public DataProductionExtend(bool locked,Guid lockedClientId,string cycle,string researchTarget,
-			string researchProduct,string expressionType,string historyDataTimeLength,string fitCoefficient,
-			string sampleRatio,string channelMatch,string areaMatch)
+		public DataProductionExtend(bool locked, Guid lockedClientId, string cycle, string researchTarget,
+			string researchProduct, string expressionType, string historyDataTimeLength, string fitCoefficient,
+			string sampleRatio, string channelMatch, string areaMatch)
 		{
 			Locked = locked;
 			LockedClientId = lockedClientId;
@@ -80,7 +80,7 @@ namespace Product.Domain.AggregateRoot
 			SampleRatio = sampleRatio;
 			ChannelMatch = channelMatch;
 			AreaMatch = areaMatch;
-		} 
+		}
 
 		protected override IEnumerable<object> GetAtomicValues()
 		{
