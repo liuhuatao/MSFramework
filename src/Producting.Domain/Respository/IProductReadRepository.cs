@@ -1,7 +1,7 @@
 using MSFramework.DependencyInjection;
 using MSFramework.Domain.Repository;
 
-namespace Product.Domain
+namespace Producting.Domain.Respository
 {
 	public interface IProductReadRepository : IReadRepository<AggregateRoot.Product>, IScopeDependency
 	{

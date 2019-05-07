@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSFramework.AspNetCore", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{3AD99DEE-44C7-4A33-AEC0-D06FD0D27FA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.Domain", "src\Product.Domain\Product.Domain.csproj", "{644D69CC-2F17-43FA-9083-DD40AFE63A17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producting.Domain", "src\Producting.Domain\Producting.Domain.csproj", "{644D69CC-2F17-43FA-9083-DD40AFE63A17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 using System;
 
-namespace Product.Domain
+namespace Producting.Domain
 {
 	public class ProductException : Exception
 	{
